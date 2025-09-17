@@ -66,52 +66,49 @@ def water_calculation(F=None, U=None, V=None, f=None, u=None, v=None, m=None):
     unknowns = [k for k, l in knowns.items() if l is None]
 
     if len(unknowns) != 2:
-        return "Please leave exactly two variables as None."
+        return {"Error": "Please leave exactly two variables as None."}
 
-    result = ""
+    # Initialize return dict
+    results = {}
 
-    # 1)  U and V
+    # 1) U and V
     if 'U' in unknowns and 'V' in unknowns and F is not None:
         if all(l is not None for l in [F, f, u, v]):
             U = (F * (f - v)) / (u - v)
             V = F - U
-            result += f"U = {round(U, 2)} t/h\nV = {round(V, 2)} t/h\n"
+            results["U"] = round(U, 2)
+            results["V"] = round(V, 2)
 
-    # 2)  F and U
+    # 2) F and U
     elif 'F' in unknowns and 'U' in unknowns and all(l is not None for l in [V, f, u, v]):
         F = V * (v - u) / (f - u)
         U = F - V
-        result += f"F = {round(F, 2)} t/h\nU = {round(U, 2)} t/h\n"
+        results["F"] = round(F, 2)
+        results["U"] = round(U, 2)
 
     # 3) F and V
     elif 'F' in unknowns and 'V' in unknowns and all(l is not None for l in [U, f, u, v]):
         F = U * (u - v) / (f - v)
         V = F - U
-        result += f"F = {round(F, 2)} t/h\nV = {round(V, 2)} t/h\n"
+        results["F"] = round(F, 2)
+        results["V"] = round(V, 2)
 
     else:
-        return "Combination not supported or insufficient data."
+        return {"Error": "Combination not supported or insufficient data."}
 
     # Water calculations
     if all(val is not None for val in [F, V, U, f, u, v, m]):
-        water_ball_mill_feed = V * (m / (100 - m)) + U * u
-        water_ball_mill_feed = round(water_ball_mill_feed, 1)
-
-        total_solids_cyclone = V + U
-        water_cyclone_feed = total_solids_cyclone * f
-        water_cyclone_feed = round(water_cyclone_feed, 1)
-
+        water_ball_mill_feed = round(V * (m / (100 - m)) + U * u, 1)
+        water_cyclone_feed = round((V + U) * f, 1)
         water_requirement_cyclone = round(water_cyclone_feed - water_ball_mill_feed, 1)
 
-        result += (
-            f"Water in Ball Mill Feed = {water_ball_mill_feed} m3/h\n"
-            f"Water in Cyclone Feed = {water_cyclone_feed} m3/h\n"
-            f"Water Requirement at Cyclone Feed = {water_requirement_cyclone} m3/h\n"
-        )
+        results["Water in Ball Mill Feed"] = f"{water_ball_mill_feed} m³/h"
+        results["Water in Cyclone Feed"] = f"{water_cyclone_feed} m³/h"
+        results["Water Requirement at Cyclone Feed"] = f"{water_requirement_cyclone} m³/h"
     else:
-        result += "Water calculation skipped due to missing values.\n"
+        results["Note"] = "Water calculation skipped due to missing values."
 
-    return result
+    return results
 
 # ---------------- Streamlit App ----------------
 
