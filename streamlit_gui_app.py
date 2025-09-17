@@ -16,7 +16,7 @@ def two_product_formula(F=None, C=None, T=None, f=None, c=None, t=None):
         if all(v is not None for v in [F, f, c, t]):
             C = (F * (f - t)) / (c - t)
             T = F - C
-            result += f"C = {round(C, 2)}\nT = {round(T, 2)}\n"
+            result += f"C = {round(C, 2)} t/h\nT = {round(T, 2)} t/h\n"
         else:
             return "Not enough info to solve for C and T."
 
@@ -24,25 +24,25 @@ def two_product_formula(F=None, C=None, T=None, f=None, c=None, t=None):
     elif 'F' in unknowns and 'C' in unknowns and all(v is not None for v in [T, f, c, t]):
         F = T * (t - c) / (f - c)
         C = F - T
-        result += f"F = {round(F, 2)}\nC = {round(C, 2)}\n"
+        result += f"F = {round(F, 2)} t/h\nC = {round(C, 2)} t/h\n"
 
     # 3) F and T
     elif 'F' in unknowns and 'T' in unknowns and all(v is not None for v in [C, f, c, t]):
         F = C * (c - t) / (f - t)
         T = F - C
-        result += f"F = {round(F, 2)}\nT = {round(T, 2)}\n"
+        result += f"F = {round(F, 2) t/h}\nT = {round(T, 2)} t/h\n"
 
     # 4) C and f
     elif 'C' in unknowns and 'f' in unknowns and all(v is not None for v in [F, T, c, t]):
         C = F - T
         f = (C * c + T * t) / F
-        result += f"C = {round(C, 2)}\nf = {round(f, 4)}\n"
+        result += f"C = {round(C, 2)} t/h\nf = {round(f, 4)} %\n"
 
     # 5)  F and f
     elif 'F' in unknowns and 'f' in unknowns and all(v is not None for v in [C, T, c, t]):
         F = C + T
         f = (C * c + T * t) / F
-        result += f"F = {round(F, 2)}\nf = {round(f, 4)}\n"
+        result += f"F = {round(F, 2)} t/h\nf = {round(f, 4)} %\n"
 
     #6) f and t
     elif 'f' in unknowns and 't' in unknowns and all(v is not None for v in [F, C, T, c]):
@@ -75,19 +75,19 @@ def water_calculation(F=None, U=None, V=None, f=None, u=None, v=None, m=None):
         if all(l is not None for l in [F, f, u, v]):
             U = (F * (f - v)) / (u - v)
             V = F - U
-            result += f"U = {round(U, 2)}\nV = {round(V, 2)}\n"
+            result += f"U = {round(U, 2)} t/h\nV = {round(V, 2)} t/h\n"
 
     # 2)  F and U
     elif 'F' in unknowns and 'U' in unknowns and all(l is not None for l in [V, f, u, v]):
         F = V * (v - u) / (f - u)
         U = F - V
-        result += f"F = {round(F, 2)}\nU = {round(U, 2)}\n"
+        result += f"F = {round(F, 2)} t/h\nU = {round(U, 2)} t/h\n"
 
     # 3) F and V
     elif 'F' in unknowns and 'V' in unknowns and all(l is not None for l in [U, f, u, v]):
         F = U * (u - v) / (f - v)
         V = F - U
-        result += f"F = {round(F, 2)}\nV = {round(V, 2)}\n"
+        result += f"F = {round(F, 2)} t/h\nV = {round(V, 2)} t/h\n"
 
     else:
         return "Combination not supported or insufficient data."
