@@ -84,7 +84,7 @@ def water_calculation(F=None, U=None, V=None, f=None, u=None, v=None, m=None):
 st.set_page_config(page_title="Mineral Processing Tool", page_icon="⛏️", layout="wide")
 st.title("Mineral Processing Tool")
 
-st.sidebar.header("Instructions")
+st.sidebar.header("Balancing Tool")
 st.sidebar.write("This Mineral Processing Tool lets you perform **two-product** and **water balance** calculations. "
                  "Enter known values, mark exactly two variables as Unknown, and click Calculate.")
 
