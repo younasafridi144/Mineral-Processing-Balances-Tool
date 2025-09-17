@@ -184,7 +184,7 @@ if st.button("Calculate Water"):
 
     if unknown_count != 2:
         st.error("Please mark exactly two variables as Unknown.")
-        else:
+    else:
         result = water_calculation(**inputs)
 
         if "Error" in result:
