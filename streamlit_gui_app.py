@@ -30,7 +30,7 @@ def two_product_formula(F=None, C=None, T=None, f=None, c=None, t=None):
     elif 'F' in unknowns and 'T' in unknowns and all(v is not None for v in [C, f, c, t]):
         F = C * (c - t) / (f - t)
         T = F - C
-        result += f"F = {round(F, 2) t/h}\nT = {round(T, 2)} t/h\n"
+        result += f"F = {round(F, 2)} t/h\nT = {round(T, 2)} t/h\n"
 
     # 4) C and f
     elif 'C' in unknowns and 'f' in unknowns and all(v is not None for v in [F, T, c, t]):
