@@ -130,6 +130,25 @@ col1, col2, col3 = st.columns(3)
 two_inputs = {}
 two_unknowns = {}
 
+result = two_product_formula(**inputs)
+
+# Suppose your function returns a dict instead of just a string:
+# {"C": value, "T": value, "Recovery": value}
+
+if isinstance(result, dict):
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("Concentrate (C)", f"{result['C']} t/h")
+    with col2:
+        st.metric("Tailings (T)", f"{result['T']} t/h")
+    with col3:
+        st.metric("Recovery", f"{result['Recovery']} %")
+else:
+    st.error(result)
+
+
+
+
 with col1:
     two_inputs['F'] = st.text_input("Feed (F) [t/h]")
     two_inputs['C'] = st.text_input("Concentrate (C) [t/h]")
