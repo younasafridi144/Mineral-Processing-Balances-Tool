@@ -7,58 +7,27 @@ def two_product_formula(F=None, C=None, T=None, f=None, c=None, t=None):
     unknowns = [k for k, v in knowns.items() if v is None]
 
     if len(unknowns) != 2:
-        return "Please leave exactly two variables as None."
+        return {"Error": "Please leave exactly two variables as None."}
 
-    result = ""
+    # Initialize results
+    results = {"C": None, "T": None, "Recovery": None}
 
-    # 1)  C and T
+    # Example: C and T unknown
     if 'C' in unknowns and 'T' in unknowns and F is not None:
         if all(v is not None for v in [F, f, c, t]):
             C = (F * (f - t)) / (c - t)
             T = F - C
-            result += f"C = {round(C, 2)} t/h\nT = {round(T, 2)} t/h\n"
+            results["C"] = round(C, 2)
+            results["T"] = round(T, 2)
         else:
-            return "Not enough info to solve for C and T."
-
-    # 2)  F and C
-    elif 'F' in unknowns and 'C' in unknowns and all(v is not None for v in [T, f, c, t]):
-        F = T * (t - c) / (f - c)
-        C = F - T
-        result += f"F = {round(F, 2)} t/h\nC = {round(C, 2)} t/h\n"
-
-    # 3) F and T
-    elif 'F' in unknowns and 'T' in unknowns and all(v is not None for v in [C, f, c, t]):
-        F = C * (c - t) / (f - t)
-        T = F - C
-        result += f"F = {round(F, 2)} t/h\nT = {round(T, 2)} t/h\n"
-
-    # 4) C and f
-    elif 'C' in unknowns and 'f' in unknowns and all(v is not None for v in [F, T, c, t]):
-        C = F - T
-        f = (C * c + T * t) / F
-        result += f"C = {round(C, 2)} t/h\nf = {round(f, 4)} %\n"
-
-    # 5)  F and f
-    elif 'F' in unknowns and 'f' in unknowns and all(v is not None for v in [C, T, c, t]):
-        F = C + T
-        f = (C * c + T * t) / F
-        result += f"F = {round(F, 2)} t/h\nf = {round(f, 4)} %\n"
-
-    #6) f and t
-    elif 'f' in unknowns and 't' in unknowns and all(v is not None for v in [F, C, T, c]):
-        return "Cannot uniquely solve for f and t. Underdetermined system."
-
-    else:
-        return "Combination not supported or insufficient data."
+            return {"Error": "Not enough info to solve for C and T."}
 
     # Recovery
     if all(v is not None for v in [F, C, f, c]) and f != 0:
         recovery = 100 * (C * c) / (F * f)
-        result += f"Recovery = {round(recovery, 2)}%"
-    else:
-        result += "Recovery cannot be calculated due to insufficient data."
+        results["Recovery"] = round(recovery, 2)
 
-    return result
+    return results
 
 
 def water_calculation(F=None, U=None, V=None, f=None, u=None, v=None, m=None):
@@ -68,8 +37,7 @@ def water_calculation(F=None, U=None, V=None, f=None, u=None, v=None, m=None):
     if len(unknowns) != 2:
         return {"Error": "Please leave exactly two variables as None."}
 
-    # Initialize return dict
-    results = {}
+    results = {"F": F, "U": U, "V": V}
 
     # 1) U and V
     if 'U' in unknowns and 'V' in unknowns and F is not None:
@@ -110,18 +78,18 @@ def water_calculation(F=None, U=None, V=None, f=None, u=None, v=None, m=None):
 
     return results
 
+
 # ---------------- Streamlit App ----------------
 
-st.set_page_config(page_title="Mining Calculations", layout="wide")
+st.set_page_config(page_title="Mineral Processing Tool", page_icon="⛏️", layout="wide")
 st.title("Mineral Processing Tool")
 
-st.sidebar.image("https://upload.wikimedia.org/wikipedia/commons/3/33/Excavator_icon.png", width=100)
-st.sidebar.title("Mineral Processing Balances")
-st.sidebar.markdown("This tool helps perform **mass balancing** in mineral processing.\n\nFeatures:\n- Two-Product Formula\n- Water Balance\n- Recovery Calculations")
-
+st.sidebar.header("Instructions")
+st.sidebar.write("This Mineral Processing Tool lets you perform **two-product** and **water balance** calculations. "
+                 "Enter known values, mark exactly two variables as Unknown, and click Calculate.")
 
 # --- Two Product Formula ---
-st.header("Two-Product Formula")
+st.header("⚖️ Two-Product Formula")
 
 col1, col2, col3 = st.columns(3)
 two_inputs = {}
@@ -132,16 +100,16 @@ with col1:
     two_inputs['C'] = st.text_input("Concentrate (C) [t/h]")
     two_inputs['T'] = st.text_input("Tailings (T) [t/h]")
 with col2:
-    two_inputs['f'] = st.text_input("Feed Grade (f) %")
-    two_inputs['c'] = st.text_input("Concentrate Grade (c) %")
-    two_inputs['t'] = st.text_input("Tailings Grade (t) %")
+    two_inputs['f'] = st.text_input("Feed Grade (f) [%]")
+    two_inputs['c'] = st.text_input("Concentrate Grade (c) [%]")
+    two_inputs['t'] = st.text_input("Tailings Grade (t) [%]")
 with col3:
-    two_unknowns['F'] = st.checkbox("Unknown F [t/h]")
-    two_unknowns['C'] = st.checkbox("Unknown C [t/h]")
-    two_unknowns['T'] = st.checkbox("Unknown T [t/h]")
-    two_unknowns['f'] = st.checkbox("Unknown f %")
-    two_unknowns['c'] = st.checkbox("Unknown c %")
-    two_unknowns['t'] = st.checkbox("Unknown t %")
+    two_unknowns['F'] = st.checkbox("Unknown F")
+    two_unknowns['C'] = st.checkbox("Unknown C")
+    two_unknowns['T'] = st.checkbox("Unknown T")
+    two_unknowns['f'] = st.checkbox("Unknown f")
+    two_unknowns['c'] = st.checkbox("Unknown c")
+    two_unknowns['t'] = st.checkbox("Unknown t")
 
 if st.button("Calculate Two-Product"):
     inputs = {}
@@ -155,48 +123,40 @@ if st.button("Calculate Two-Product"):
                 inputs[k] = float(two_inputs[k]) if two_inputs[k] else None
             except:
                 inputs[k] = None
+
     if unknown_count != 2:
         st.error("Please mark exactly two variables as Unknown.")
     else:
-        ##st.text(two_product_formula(**inputs))
-         ##result = two_product_formula(**inputs)
-        ## st.success(result)
-
-        
         result = two_product_formula(**inputs)
 
-if isinstance(result, dict):
-    col1, col2, col3 = st.columns(3)
-    if result["C"] is not None:
-        col1.metric("Concentrate (C)", f"{result['C']} t/h")
-    if result["T"] is not None:
-        col2.metric("Tailings (T)", f"{result['T']} t/h")
-    if result["Recovery"] is not None:
-        col3.metric("Recovery", f"{result['Recovery']} %")
-else:
-    st.error(result)
-
-
-
-
+        if "Error" in result:
+            st.error(result["Error"])
+        else:
+            col1, col2, col3 = st.columns(3)
+            if result["C"] is not None:
+                col1.metric("Concentrate (C)", f"{result['C']} t/h")
+            if result["T"] is not None:
+                col2.metric("Tailings (T)", f"{result['T']} t/h")
+            if result["Recovery"] is not None:
+                col3.metric("Recovery", f"{result['Recovery']} %")
 
 
 # --- Water Calculation ---
-st.header("Water Calculation")
+st.header("💧 Water Balance")
 
 col4, col5, col6 = st.columns(3)
 water_inputs = {}
 water_unknowns = {}
 
 with col4:
-    water_inputs['F'] = st.text_input("Feed (F)", key="wF")
-    water_inputs['U'] = st.text_input("Underflow (U)", key="wU")
-    water_inputs['V'] = st.text_input("Overflow (V)", key="wV")
+    water_inputs['F'] = st.text_input("Feed (F) [t/h]", key="wF")
+    water_inputs['U'] = st.text_input("Underflow (U) [t/h]", key="wU")
+    water_inputs['V'] = st.text_input("Overflow (V) [t/h]", key="wV")
 with col5:
-    water_inputs['f'] = st.text_input("Feed Dilution Ratio (f)", key="wf")
-    water_inputs['u'] = st.text_input("Underflow Dilution Ratio (u)", key="wu")
-    water_inputs['v'] = st.text_input("Overflow Dilution Ratio (v)", key="wv")
-    water_inputs['m'] = st.text_input("Moisture Content (m)", key="wm")
+    water_inputs['f'] = st.text_input("Feed Dilution Ratio (f) [ratio]", key="wf")
+    water_inputs['u'] = st.text_input("Underflow Dilution Ratio (u) [ratio]", key="wu")
+    water_inputs['v'] = st.text_input("Overflow Dilution Ratio (v) [ratio]", key="wv")
+    water_inputs['m'] = st.text_input("Moisture Content (m) [%]", key="wm")
 with col6:
     water_unknowns['F'] = st.checkbox("Unknown F", key="uF")
     water_unknowns['U'] = st.checkbox("Unknown U", key="uU")
@@ -221,11 +181,10 @@ if st.button("Calculate Water"):
         inputs['m'] = float(water_inputs['m']) if water_inputs['m'] else None
     except:
         inputs['m'] = None
+
     if unknown_count != 2:
         st.error("Please mark exactly two variables as Unknown.")
     else:
-        #st.text(water_calculation(**inputs))
-
         result = water_calculation(**inputs)
 
         if "Error" in result:
@@ -233,7 +192,5 @@ if st.button("Calculate Water"):
         else:
             cols = st.columns(len(result))
             for i, (label, value) in enumerate(result.items()):
-                cols[i].metric(label, value)
-
-
-
+                if value is not None:
+                    cols[i].metric(label, value)
