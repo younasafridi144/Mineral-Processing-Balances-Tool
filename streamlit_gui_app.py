@@ -185,22 +185,22 @@ if st.button("Calculate Water"):
     if unknown_count != 2:
         st.error("Please mark exactly two variables as Unknown.")
     else:
-               else:
+               
             # First row for F, U, V
-            col1, col2, col3 = st.columns(3)
-            if result.get("F") is not None:
-                col1.metric("Feed (F)", f"{result['F']} t/h")
-            if result.get("U") is not None:
-                col2.metric("Underflow (U)", f"{result['U']} t/h")
-            if result.get("V") is not None:
-                col3.metric("Overflow (V)", f"{result['V']} t/h")
+        col1, col2, col3 = st.columns(3)
+        if result.get("F") is not None:
+            col1.metric("Feed (F)", f"{result['F']} t/h")
+        if result.get("U") is not None:
+            col2.metric("Underflow (U)", f"{result['U']} t/h")
+        if result.get("V") is not None:
+            col3.metric("Overflow (V)", f"{result['V']} t/h")
 
             # Second row for water balances
-            col4, col5, col6 = st.columns(3)
-            if result.get("Water in Ball Mill Feed") is not None:
-                col4.metric("Water in Ball Mill Feed", result["Water in Ball Mill Feed"])
-            if result.get("Water in Cyclone Feed") is not None:
-                col5.metric("Water in Cyclone Feed", result["Water in Cyclone Feed"])
-            if result.get("Water Requirement at Cyclone Feed") is not None:
-                col6.metric("Water Requirement at Cyclone Feed", result["Water Requirement at Cyclone Feed"])
+        col4, col5, col6 = st.columns(3)
+        if result.get("Water in Ball Mill Feed") is not None:
+            col4.metric("Water in Ball Mill Feed", result["Water in Ball Mill Feed"])
+        if result.get("Water in Cyclone Feed") is not None:
+            col5.metric("Water in Cyclone Feed", result["Water in Cyclone Feed"])
+        if result.get("Water Requirement at Cyclone Feed") is not None:
+            col6.metric("Water Requirement at Cyclone Feed", result["Water Requirement at Cyclone Feed"])
 
