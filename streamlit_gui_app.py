@@ -116,10 +116,10 @@ def water_calculation(F=None, U=None, V=None, f=None, u=None, v=None, m=None):
 # ---------------- Streamlit App ----------------
 
 st.set_page_config(page_title="Mining Calculations", layout="wide")
-st.title("Mining Engineering Calculator")
+st.title("Mineral Processing Tool")
 
 st.sidebar.header("Instructions")
-st.sidebar.write("Enter known values. Leave two inputs blank and check them as Unknown. Then click Calculate.")
+st.sidebar.write("This Mineral Processing Tool lets you perform two-product and water balance calculations. Enter known values, mark exactly two variables as Unknown, and click Calculate.")
 
 # --- Two Product Formula ---
 st.header("Two-Product Formula")
