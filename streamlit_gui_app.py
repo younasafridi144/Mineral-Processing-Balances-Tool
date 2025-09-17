@@ -227,4 +227,16 @@ if st.button("Calculate Water"):
     if unknown_count != 2:
         st.error("Please mark exactly two variables as Unknown.")
     else:
-        st.text(water_calculation(**inputs))
+        #st.text(water_calculation(**inputs))
+
+        result = water_calculation(**inputs)
+
+        if "Error" in result:
+            st.error(result["Error"])
+        else:
+            cols = st.columns(len(result))
+            for i, (label, value) in enumerate(result.items()):
+                cols[i].metric(label, value)
+
+
+
