@@ -118,8 +118,10 @@ def water_calculation(F=None, U=None, V=None, f=None, u=None, v=None, m=None):
 st.set_page_config(page_title="Mining Calculations", layout="wide")
 st.title("Mineral Processing Tool")
 
-st.sidebar.header("Instructions")
-st.sidebar.write("This Mineral Processing Tool lets you perform two-product and water balance calculations. Enter known values, mark exactly two variables as Unknown, and click Calculate.")
+st.sidebar.image("https://upload.wikimedia.org/wikipedia/commons/3/33/Excavator_icon.png", width=100)
+st.sidebar.title("Mineral Processing Balances")
+st.sidebar.markdown("This tool helps perform **mass balancing** in mineral processing.\n\nFeatures:\n- Two-Product Formula\n- Water Balance\n- Recovery Calculations")
+
 
 # --- Two Product Formula ---
 st.header("Two-Product Formula")
@@ -159,7 +161,10 @@ if st.button("Calculate Two-Product"):
     if unknown_count != 2:
         st.error("Please mark exactly two variables as Unknown.")
     else:
-        st.text(two_product_formula(**inputs))
+        ##st.text(two_product_formula(**inputs))
+        result = two_product_formula(**inputs)
+        st.success(result)
+
 
 # --- Water Calculation ---
 st.header("Water Calculation")
