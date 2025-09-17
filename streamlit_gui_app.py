@@ -129,20 +129,20 @@ two_inputs = {}
 two_unknowns = {}
 
 with col1:
-    two_inputs['F'] = st.text_input("Feed (F)")
-    two_inputs['C'] = st.text_input("Concentrate (C)")
-    two_inputs['T'] = st.text_input("Tailings (T)")
+    two_inputs['F'] = st.text_input("Feed (F) [t/h]")
+    two_inputs['C'] = st.text_input("Concentrate (C) [t/h]")
+    two_inputs['T'] = st.text_input("Tailings (T) [t/h]")
 with col2:
-    two_inputs['f'] = st.text_input("Feed Grade (f)")
-    two_inputs['c'] = st.text_input("Concentrate Grade (c)")
-    two_inputs['t'] = st.text_input("Tailings Grade (t)")
+    two_inputs['f'] = st.text_input("Feed Grade (f) %")
+    two_inputs['c'] = st.text_input("Concentrate Grade (c) %")
+    two_inputs['t'] = st.text_input("Tailings Grade (t) %")
 with col3:
-    two_unknowns['F'] = st.checkbox("Unknown F")
-    two_unknowns['C'] = st.checkbox("Unknown C")
-    two_unknowns['T'] = st.checkbox("Unknown T")
-    two_unknowns['f'] = st.checkbox("Unknown f")
-    two_unknowns['c'] = st.checkbox("Unknown c")
-    two_unknowns['t'] = st.checkbox("Unknown t")
+    two_unknowns['F'] = st.checkbox("Unknown F [t/h]")
+    two_unknowns['C'] = st.checkbox("Unknown C [t/h]")
+    two_unknowns['T'] = st.checkbox("Unknown T [t/h]")
+    two_unknowns['f'] = st.checkbox("Unknown f %")
+    two_unknowns['c'] = st.checkbox("Unknown c %")
+    two_unknowns['t'] = st.checkbox("Unknown t %")
 
 if st.button("Calculate Two-Product"):
     inputs = {}
